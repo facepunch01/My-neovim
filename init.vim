@@ -22,15 +22,14 @@ set ttyfast
 set termguicolors
 let mapleader = " "
 :let NEOVIDE_MULTIGRID = 'true'
-call plug#begin('~\AppData\Local\nvim-data\plugged')
+call plug#begin('~/.config/nvim/plugged')
   Plug 'doums/darcula'
   Plug 'ryanoasis/vim-devicons'
   Plug 'honza/vim-snippets'
   Plug 'scrooloose/nerdtree'
   Plug 'preservim/nerdcommenter'
   Plug 'mhinz/vim-startify'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  Plug 'shaunsingh/nord.nvim'
+  Plug 'arcticicestudio/nord-vim'
   Plug 'itchyny/lightline.vim'
   Plug 'PhilRunninger/nerdtree-visual-selection'
   Plug 'psliwka/vim-smoothie'
@@ -39,57 +38,47 @@ call plug#begin('~\AppData\Local\nvim-data\plugged')
   Plug 'leafOfTree/vim-svelte-plugin'
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
-  " Rust
-" Collection of common configurations for the Nvim LSP client
-  Plug 'neovim/nvim-lspconfig'
- 
-" Completion framework
-  Plug 'hrsh7th/nvim-cmp'
-
-" LSP completion source for nvim-cmp
-  Plug 'hrsh7th/cmp-nvim-lsp'
-
-" Snippet completion source for nvim-cmp
-  Plug 'hrsh7th/cmp-vsnip'
-
-" Other usefull completion sources
-  Plug 'hrsh7th/cmp-path'
-  Plug 'hrsh7th/cmp-buffer'
-
-" See hrsh7th's other plugins for more completion sources!
-
-" To enable more of the features of rust-analyzer, such as inlay hints and more!
-  Plug 'simrat39/rust-tools.nvim'
-
-" Snippet engine
-  Plug 'hrsh7th/vim-vsnip'
-
-" Fuzzy finder
-" Optional
-  Plug 'nvim-lua/popup.nvim'
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-telescope/telescope.nvim'
-" end of rust
   Plug 'glepnir/lspsaga.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'lervag/wiki.vim'
   Plug 'skywind3000/asyncrun.vim'
-  Plug 'samgriesemer/vim-roam'
   Plug 'terryma/vim-multiple-cursors'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+  " RUST PLUGINS
+  " Collection of common configurations for the Nvim LSP client
+  Plug 'neovim/nvim-lspconfig'
+  
+  " Completion framework
+  Plug 'hrsh7th/nvim-cmp'
+  
+  " LSP completion source for nvim-cmp
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  
+  " Snippet completion source for nvim-cmp
+  Plug 'hrsh7th/cmp-vsnip'
+  
+  " Other usefull completion sources
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/cmp-buffer'
+  
+  " See hrsh7th's other plugins for more completion sources!
+  
+  " To enable more of the features of rust-analyzer, such as inlay hints and more!
+  Plug 'simrat39/rust-tools.nvim'
+  
+  " Snippet engine
+  Plug 'hrsh7th/vim-vsnip'
+  " RUST END
+  Plug 'vimwiki/vimwiki'
+
 call plug#end()
-colorscheme nord
-let g:lightline = {
-      \ 'colorscheme': 'nord',
-      \ }
-nnoremap <space>e :NERDTreeToggle<CR>
-nnoremap ; <cmd>Telescope find_files<CR>
-:let FZF_DEFAULT_COMMAND='rg --files'
-:let FZF_DEFAULT_OPTS='--height 50%'
-:cd ~\
-
-
-
-" More rust
+" RUST LSP CONF
+" Set completeopt to have a better completion experience
+" :help completeopt
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
 set completeopt=menuone,noinsert,noselect
 
 " Avoid showing extra messages when using completion
@@ -170,7 +159,22 @@ cmp.setup({
   },
 })
 EOF
+" RUST LSP END
+colorscheme nord
+let g:lightline = {
+      \ 'colorscheme': 'nord',
+      \ }
+nnoremap <space>e :NERDTreeToggle<CR>
+nnoremap ; <cmd>Telescope find_files<CR>
+:let FZF_DEFAULT_COMMAND='rg --files'
+:let FZF_DEFAULT_OPTS='--height 50%'
+:cd ~/
 
-let g:wiki_root = '~\Documents\School-files\LA\'
-let g:wiki_filetypes = ['md']
-let g:wiki_link_extension = '.md'
+let wiki_1 = {}
+let wiki_1.path = '~/School/LA/'
+let wiki_1.syntax = 'markdown'
+let wiki_1.ext = '.md'
+
+let g:vimwiki_list = [wiki_1]
+let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+let g:vimwiki_global_ext = 0
