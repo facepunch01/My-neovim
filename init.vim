@@ -23,7 +23,6 @@ set termguicolors
 let mapleader = " "
 :let NEOVIDE_MULTIGRID = 'true'
 call plug#begin('~/.config/nvim/plugged')
-  Plug 'doums/darcula'
   Plug 'ryanoasis/vim-devicons'
   Plug 'honza/vim-snippets'
   Plug 'scrooloose/nerdtree'
@@ -33,7 +32,6 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'itchyny/lightline.vim'
   Plug 'PhilRunninger/nerdtree-visual-selection'
   Plug 'psliwka/vim-smoothie'
-  Plug 'tomasr/molokai'
   Plug 'sheerun/vim-polyglot'
   Plug 'leafOfTree/vim-svelte-plugin'
   Plug 'nvim-lua/plenary.nvim'
@@ -71,7 +69,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'hrsh7th/vim-vsnip'
   " RUST END
   Plug 'vimwiki/vimwiki'
-
+  Plug 'williamboman/nvim-lsp-installer'
 call plug#end()
 " RUST LSP CONF
 " Set completeopt to have a better completion experience
@@ -160,6 +158,19 @@ cmp.setup({
 })
 EOF
 " RUST LSP END
+
+" PYTHON LSP START
+lua <<EOF
+require'lspconfig'.jedi_language_server.setup{}
+EOF
+" PYTHON LSP END
+
+" DOCKER LSP START
+lua <<EOF
+require'lspconfig'.dockerls.setup{ cmd = { "/Users/jakehackl/.nvm/versions/node/v17.2.0/bin/docker-langserver", "--stdio" } }
+EOF
+" DOCKER LSP END
+
 colorscheme nord
 let g:lightline = {
       \ 'colorscheme': 'nord',
