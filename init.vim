@@ -177,6 +177,7 @@ let g:lightline = {
       \ }
 nnoremap <space>e :NERDTreeToggle<CR>
 nnoremap ; <cmd>Telescope find_files<CR>
+nnoremap [ <cmd>! R -e "rmarkdown::render('%')"<CR>
 :let FZF_DEFAULT_COMMAND='rg --files'
 :let FZF_DEFAULT_OPTS='--height 50%'
 :cd ~/
