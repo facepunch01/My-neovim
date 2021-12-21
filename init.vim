@@ -21,7 +21,6 @@ set cursorline
 set ttyfast
 set termguicolors
 let mapleader = " "
-:let NEOVIDE_MULTIGRID = 'true'
 call plug#begin('~/.config/nvim/plugged')
   Plug 'ryanoasis/vim-devicons'
   Plug 'honza/vim-snippets'
@@ -70,6 +69,7 @@ call plug#begin('~/.config/nvim/plugged')
   " RUST END
   Plug 'vimwiki/vimwiki'
   Plug 'williamboman/nvim-lsp-installer'
+  Plug 'wikitopian/hardmode'
 call plug#end()
 " RUST LSP CONF
 " Set completeopt to have a better completion experience
@@ -170,6 +170,11 @@ lua <<EOF
 require'lspconfig'.dockerls.setup{ cmd = { "/Users/jakehackl/.nvm/versions/node/v17.2.0/bin/docker-langserver", "--stdio" } }
 EOF
 " DOCKER LSP END
+" NIM LSP
+lua <<EOF
+require'lspconfig'.nimls.setup{}
+EOF
+" NIM LSP END
 
 colorscheme nord
 let g:lightline = {
@@ -182,10 +187,13 @@ nnoremap ; <cmd>Telescope find_files<CR>
 :cd ~/
 
 let wiki_1 = {}
-let wiki_1.path = '~/School/LA/'
+let wiki_1.path = '~/School/'
 let wiki_1.syntax = 'markdown'
 let wiki_1.ext = '.md'
 
 let g:vimwiki_list = [wiki_1]
 let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 let g:vimwiki_global_ext = 0
+set guifont=JetBrains\ Mono:h14
+autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+let g:HardMode_level = 'wannabe'
