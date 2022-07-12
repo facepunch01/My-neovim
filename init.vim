@@ -42,87 +42,27 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
   Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-  " RUST PLUGINS
-  " Collection of common configurations for the Nvim LSP client
-  Plug 'neovim/nvim-lspconfig'
-  
-  " Completion framework
+  Plug 'wikitopian/hardmode'
+  "lsp
   Plug 'hrsh7th/nvim-cmp'
-  
-  " LSP completion source for nvim-cmp
   Plug 'hrsh7th/cmp-nvim-lsp'
-  
-  " Snippet completion source for nvim-cmp
   Plug 'hrsh7th/cmp-vsnip'
-  
-  " Other usefull completion sources
   Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/cmp-buffer'
-  
-  " See hrsh7th's other plugins for more completion sources!
-  
-  " To enable more of the features of rust-analyzer, such as inlay hints and more!
-  Plug 'simrat39/rust-tools.nvim'
-  
-  " Snippet engine
   Plug 'hrsh7th/vim-vsnip'
-  " RUST END
-  Plug 'vimwiki/vimwiki'
-  Plug 'williamboman/nvim-lsp-installer'
-  Plug 'wikitopian/hardmode'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'ziglang/zig.vim'
 call plug#end()
-" RUST LSP CONF
-" Set completeopt to have a better completion experience
-" :help completeopt
-" menuone: popup even when there's only one match
-" noinsert: Do not insert text until a selection is made
-" noselect: Do not select, force user to select one from the menu
+
 set completeopt=menuone,noinsert,noselect
 
 " Avoid showing extra messages when using completion
 set shortmess+=c
 
-" Configure LSP through rust-tools.nvim plugin.
-" rust-tools will configure and enable certain LSP features for us.
-" See https://github.com/simrat39/rust-tools.nvim#configuration
 lua <<EOF
-local nvim_lsp = require'lspconfig'
-
-local opts = {
-    tools = { -- rust-tools options
-        autoSetHints = true,
-        hover_with_actions = true,
-        inlay_hints = {
-            show_parameter_hints = false,
-            parameter_hints_prefix = "",
-            other_hints_prefix = "",
-        },
-    },
-
-    -- all the opts to send to nvim-lspconfig
-    -- these override the defaults set by rust-tools.nvim
-    -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
-    server = {
-        -- on_attach is a callback called when the language server attachs to the buffer
-        -- on_attach = on_attach,
-        settings = {
-            -- to enable rust-analyzer settings visit:
-            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-            ["rust-analyzer"] = {
-                -- enable clippy on save
-                checkOnSave = {
-                    command = "clippy"
-                },
-            }
-        }
-    },
-}
-
-require('rust-tools').setup(opts)
+local lspconfig = require('lspconfig')
+lspconfig.zls.setup{}
 EOF
-
-" Setup Completion
-" See https://github.com/hrsh7th/nvim-cmp#basic-configuration
 lua <<EOF
 local cmp = require'cmp'
 cmp.setup({
@@ -157,24 +97,6 @@ cmp.setup({
   },
 })
 EOF
-" RUST LSP END
-
-" PYTHON LSP START
-lua <<EOF
-require'lspconfig'.jedi_language_server.setup{}
-EOF
-" PYTHON LSP END
-
-" DOCKER LSP START
-lua <<EOF
-require'lspconfig'.dockerls.setup{ cmd = { "/Users/jakehackl/.nvm/versions/node/v17.2.0/bin/docker-langserver", "--stdio" } }
-EOF
-" DOCKER LSP END
-" NIM LSP
-lua <<EOF
-require'lspconfig'.nimls.setup{}
-EOF
-" NIM LSP END
 
 colorscheme nord
 let g:lightline = {
@@ -185,16 +107,6 @@ nnoremap ; <cmd>Telescope find_files<CR>
 nnoremap [ <cmd>! R -e "rmarkdown::render('%')"<CR>
 :let FZF_DEFAULT_COMMAND='rg --files'
 :let FZF_DEFAULT_OPTS='--height 50%'
-:cd ~/
 
-let wiki_1 = {}
-let wiki_1.path = '~/School/'
-let wiki_1.syntax = 'markdown'
-let wiki_1.ext = '.md'
-
-let g:vimwiki_list = [wiki_1]
-let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-let g:vimwiki_global_ext = 0
 set guifont=JetBrains\ Mono:h14
-autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 let g:HardMode_level = 'wannabe'
